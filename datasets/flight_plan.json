@@ -1,0 +1,1 @@
+{"flightPlan":{"timeout":30000,"customer":{"name":"mockedName","coordinates":{"latitude":2.3488,"longitude":48.85341}},"order":{"deliveryTime":48145939,"qrCodeValue":"#QRCodesAreAwesomes"}}}

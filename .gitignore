@@ -1,0 +1,23 @@
+# IntelliJ #
+.idea/
+*.iml
+
+# Maven #
+target/
+
+# Eclipse #
+.project
+.classpath
+.target
+.metadata
+
+# Java #
+*.class
+*.jar
+*.war
+
+# Others #
+*~
+
+# Log4j #
+logs/

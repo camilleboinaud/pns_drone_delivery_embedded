@@ -1,1 +1,7 @@
-# pns_drone_delivery_embedded
+Projet Drone QRCode Architecture logicielle
+
+Groupe 11 - Projet 13 :
+	- Camille Boineaud
+	- Clément Forneris
+	- Pierre Leca
+	- Remy Dupanloup
