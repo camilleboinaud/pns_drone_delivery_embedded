@@ -1,10 +1,10 @@
 package fr.unice.polytech.al.drone.qrcode.captors;
 
+
 /**
- * Created by lecpie on 1/8/16.
+ * This class wraps a camera analyser in a thread and periodacally run it
  */
 public class AnalyserRunnable implements Runnable {
-
     public static final long ANALYZE_PERIOD = 1000;
 
     boolean qrun = true;
@@ -16,7 +16,6 @@ public class AnalyserRunnable implements Runnable {
 
     public void run() {
         while (qrun) {
-
             try {
                 Thread.sleep(ANALYZE_PERIOD);
             } catch (InterruptedException e) {

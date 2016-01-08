@@ -21,7 +21,14 @@ public class CameraMock implements Camera {
         return qOn;
     }
 
+    // Manually set the return image for this mock
+    private BufferedImage image;
+
     public BufferedImage getImage() {
-        return null;
+        return image;
+    }
+
+    public void setReturnImage(BufferedImage image) {
+        this.image = image;
     }
 }
