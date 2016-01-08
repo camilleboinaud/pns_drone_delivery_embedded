@@ -24,13 +24,15 @@ public class SarxosCameraTest {
 
     @After
     public void clean() {
-        if (camera.isOn()) {
+        if (camera != null && camera.isOn()) {
             camera.off();
         }
     }
 
     @Test
     public void testActivateRush() {
+        Assume.assumeTrue(Webcam.getWebcams().size() > 0);
+
         int ntest = 5;
 
         for (int i = 0; i < ntest; ++i) {
@@ -44,6 +46,8 @@ public class SarxosCameraTest {
 
     @Test
     public void testGetImageRush() {
+        Assume.assumeTrue(Webcam.getWebcams().size() > 0);
+
         camera.on();
 
         int ntest = 10;
