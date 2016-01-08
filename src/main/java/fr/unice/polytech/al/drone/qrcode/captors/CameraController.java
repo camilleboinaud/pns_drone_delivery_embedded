@@ -13,28 +13,32 @@ public class CameraController {
 
     private static final Logger logger = LogManager.getLogger(CameraController.class.getName());
     private CameraAnalyser analyser;
+    private Camera camera;
 
     private Thread runner;
 
-    public CameraController() {
-        this(new WebcamCameraAnalyser());
-    }
 
-    public CameraController(CameraAnalyser analyser) {
+    public CameraController(CameraAnalyser analyser, Camera camera) {
+        this.camera   = camera;
         this.analyser = analyser;
     }
 
     @Subscribe
     public void listenStartSearchingEvent(StartSearchingEvent event) {
         logger.info(event.getType().toString() + " event received : starting QRCode searching");
+
         runner = new Thread(analyser);
         runner.start();
+
+        camera.on();
     }
 
     @Subscribe
     public void listenStopSearchingEvent(StopSearchingEvent event) {
         logger.info(event.getType().toString() + " event received : stopping QRCode searching");
         runner.interrupt();
+
+        camera.off();
     }
 
 }

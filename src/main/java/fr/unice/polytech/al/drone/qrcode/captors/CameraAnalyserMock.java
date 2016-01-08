@@ -14,11 +14,10 @@ public class CameraAnalyserMock implements CameraAnalyser {
     private boolean isRunning;
     private String[] mock;
 
-    public CameraAnalyserMock(String... mock){
+    public CameraAnalyserMock(String... mock) {
         isRunning = true;
         this.mock = mock;
     }
-
 
     public void run() {
 
@@ -43,6 +42,10 @@ public class CameraAnalyserMock implements CameraAnalyser {
                 break;
             }
         }
+    }
+
+    public Camera getCamera() {
+        return null;
     }
 
     public void setRunning(boolean isRunning){
