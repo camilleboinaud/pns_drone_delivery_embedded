@@ -1,7 +1,9 @@
 package fr.unice.polytech.al.drone.qrcode.captors;
 
+import com.github.sarxos.webcam.Webcam;
 import junit.framework.Assert;
 import org.junit.After;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,6 +16,9 @@ public class SarxosCameraTest {
 
     @Before
     public void setup() {
+        // No point trying to use a camera if there is none on the harwdare, ignore tests in this case
+        Assume.assumeTrue(Webcam.getWebcams().size() > 0);
+
         camera = new SarxosCamera();
     }
 
