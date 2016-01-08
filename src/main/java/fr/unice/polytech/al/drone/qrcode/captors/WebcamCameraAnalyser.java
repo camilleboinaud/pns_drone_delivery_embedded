@@ -26,34 +26,23 @@ public class WebcamCameraAnalyser implements CameraAnalyser {
         this.camera = camera;
     }
 
+    public void analyze() {
+        Result result = null;
+        BufferedImage image;
 
-    public void run() {
-        while (true) {
+        if (camera.isOn()) {
+            if ((image = camera.getImage()) == null) { return; }
+            LuminanceSource source = new BufferedImageLuminanceSource(image);
+            BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+
             try {
-                Result result = null;
-                BufferedImage image;
+                result = new MultiFormatReader().decode(bitmap);
+            } catch (NotFoundException e) {}
 
-                if (camera.isOn()) {
-                    if ((image = camera.getImage()) == null) { continue; }
-                    LuminanceSource source = new BufferedImageLuminanceSource(image);
-                    BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+        }
 
-                    try {
-                        result = new MultiFormatReader().decode(bitmap);
-                    } catch (NotFoundException e) {}
-
-                }
-
-                if (result != null) {
-                    EventFactory.createAndPost(EventTypeEnum.QR_CODE_FOUND, result.toString());
-                }
-
-                Thread.sleep(DELAY_BETWEEN_FRAMES);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                break;
-            }
+        if (result != null) {
+            EventFactory.createAndPost(EventTypeEnum.QR_CODE_FOUND, result.toString());
         }
     }
-
 }

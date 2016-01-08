@@ -15,8 +15,8 @@ public class CameraController {
     private CameraAnalyser analyser;
     private Camera camera;
 
+    private AnalyserRunnable analyserRunnable;
     private Thread runner;
-
 
     public CameraController(CameraAnalyser analyser, Camera camera) {
         this.camera   = camera;
@@ -27,7 +27,8 @@ public class CameraController {
     public void listenStartSearchingEvent(StartSearchingEvent event) {
         logger.info(event.getType().toString() + " event received : starting QRCode searching");
 
-        runner = new Thread(analyser);
+        analyserRunnable = new AnalyserRunnable(analyser);
+        runner = new Thread(analyserRunnable);
         runner.start();
 
         camera.on();
