@@ -15,34 +15,40 @@ import java.awt.image.BufferedImage;
 /**
  * Created by camille on 10/11/15.
  */
-public class WebcamCameraAnalyser implements CameraAnalyser {
+public class CameraQRCodeAnalyser implements CameraAnalyser {
 
     private static final int DELAY_BETWEEN_FRAMES = 200;
     private static final int CAMERA_NUMBER = 0;
 
     private Camera camera;
 
-    public WebcamCameraAnalyser(Camera camera) {
+    public CameraQRCodeAnalyser(Camera camera) {
         this.camera = camera;
     }
 
-    public void analyze() {
+    public String analyze() {
         Result result = null;
         BufferedImage image;
 
+        // Anayze the camera only if it is already turned on
         if (camera.isOn()) {
-            if ((image = camera.getImage()) == null) { return; }
+            // Try to get an image from the camera
+            if ((image = camera.getImage()) == null) { return null; }
+
+            // Black magic try to read the image as QR code
             LuminanceSource source = new BufferedImageLuminanceSource(image);
             BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
-
             try {
                 result = new MultiFormatReader().decode(bitmap);
             } catch (NotFoundException e) {}
-
         }
 
-        if (result != null) {
-            EventFactory.createAndPost(EventTypeEnum.QR_CODE_FOUND, result.toString());
+        // Return nothing if there is no answer
+        if (result == null) {
+            return null;
         }
+
+        // Return the answer as a string
+        return result.toString();
     }
 }

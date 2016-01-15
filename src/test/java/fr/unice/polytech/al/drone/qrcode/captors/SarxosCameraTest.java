@@ -14,6 +14,13 @@ public class SarxosCameraTest {
 
     private Camera camera;
 
+    /**
+     * This setup should check that there is an available camera to run the tests
+     * Since these tests need a physical camera to be available on the hardware
+     * but the integration server does not have one and the tests are expected to fail when this is the case
+     *
+     * In short, these tests only run when you have a camera.
+     */
     @Before
     public void setup() {
         // No point trying to use a camera if there is none on the harwdare, ignore tests in this case
@@ -36,14 +43,16 @@ public class SarxosCameraTest {
         if (camera != null && camera.isOn()) {
             camera.off();
         }
+
+        camera = null;
     }
 
+    /**
+     * Test activating and deactivating the camera at high rate
+     */
     @Test
     public void testActivateRush() {
-        Assume.assumeTrue(Webcam.getWebcams().size() > 0);
-
         int ntest = 5;
-
         for (int i = 0; i < ntest; ++i) {
             camera.on();
             Assert.assertTrue("Camera not on after on() call", camera.isOn());
@@ -53,17 +62,35 @@ public class SarxosCameraTest {
         }
     }
 
+    /**
+     * Test high camera capture rate
+     */
     @Test
     public void testGetImageRush() {
-        Assume.assumeTrue(Webcam.getWebcams().size() > 0);
-
         camera.on();
 
-        int ntest = 10;
+        int ntest = 1000;
         for (int i = 0; i < ntest; ++i) {
             Assert.assertNotNull("Did not get an image from webcam", camera.getImage());
         }
 
         camera.off();
+    }
+
+    /**
+     * Test both activating and deactivating the camera at high rate and get a burst of images
+     */
+    @Test
+    public void testgetImageStartupRush() {
+        int nboot = 5;
+        int ncapture = 10;
+
+        for (int i = 0; i < nboot; ++i) {
+            camera.on();
+            for (int j = 0; j < ncapture; ++j) {
+                Assert.assertNotNull("Did not get an image from webcam", camera.getImage());
+            }
+            camera.off();
+        }
     }
 }

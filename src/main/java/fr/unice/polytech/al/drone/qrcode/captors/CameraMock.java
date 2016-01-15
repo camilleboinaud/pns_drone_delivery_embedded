@@ -1,6 +1,7 @@
 package fr.unice.polytech.al.drone.qrcode.captors;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 
 /**
  * Created by lecpie on 1/8/16.
@@ -30,5 +31,9 @@ public class CameraMock implements Camera {
 
     public void setReturnImage(BufferedImage image) {
         this.image = image;
+    }
+
+    public void setReturnImageFromFile(File imageFile) {
+
     }
 }

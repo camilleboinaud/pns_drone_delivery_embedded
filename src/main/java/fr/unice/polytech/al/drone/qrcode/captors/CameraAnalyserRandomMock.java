@@ -19,7 +19,7 @@ public class CameraAnalyserRandomMock implements CameraAnalyser {
         this.mock = mock;
     }
 
-    public void analyze() {
+    public String analyze() {
         double decision = Math.random();
         try {
             Thread.sleep(1000);
@@ -27,12 +27,7 @@ public class CameraAnalyserRandomMock implements CameraAnalyser {
             e.printStackTrace();
         }
 
-        if (decision > 0.9) {
-            Thread.currentThread().interrupt();
-            EventFactory.createAndPost(
-                    EventTypeEnum.QR_CODE_FOUND,
-                    mock[new Random().nextInt(mock.length)]
-            );
-        }
+        // Return answer randomly, possibly nothing
+        return (decision > 0.9) ? mock[new Random().nextInt(mock.length)] : null;
     }
 }

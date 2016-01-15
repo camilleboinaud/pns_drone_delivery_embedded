@@ -37,7 +37,7 @@ public class CameraController {
     @Subscribe
     public void listenStopSearchingEvent(StopSearchingEvent event) {
         logger.info(event.getType().toString() + " event received : stopping QRCode searching");
-        runner.interrupt();
+        analyserRunnable.stop();
 
         camera.off();
     }

@@ -5,7 +5,7 @@ package fr.unice.polytech.al.drone.qrcode.captors;
  */
 public class CameraAnalyserMock implements CameraAnalyser {
 
-    public void analyze() {
-
+    public String analyze() {
+        return null;
     }
 }

@@ -18,7 +18,7 @@ public class Main {
     public static void main (String[] args) throws Exception{
 
         Camera camera = new SarxosCamera();
-        CameraAnalyser cameraAnalyser = new WebcamCameraAnalyser(camera);
+        CameraAnalyser cameraAnalyser = new CameraQRCodeAnalyser(camera);
         CameraController cameraController = new CameraController(cameraAnalyser, camera);
 
         EventBusService.instance().registerSubscriber(new InitAuthentication());
