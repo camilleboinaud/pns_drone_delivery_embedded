@@ -17,7 +17,16 @@ public class SarxosCameraTest {
     @Before
     public void setup() {
         // No point trying to use a camera if there is none on the harwdare, ignore tests in this case
-        Assume.assumeTrue(Webcam.getWebcams().size() > 0);
+        boolean qcamera;
+        try {
+            Assume.assumeTrue(Webcam.getWebcams().size() > 0);
+            qcamera = true;
+        }
+        catch (Exception e) {
+            qcamera = false;
+        }
+
+        Assume.assumeTrue(qcamera);
 
         camera = new SarxosCamera();
     }
