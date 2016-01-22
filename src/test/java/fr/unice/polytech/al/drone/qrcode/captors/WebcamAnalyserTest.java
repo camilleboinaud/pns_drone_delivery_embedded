@@ -3,15 +3,19 @@ package fr.unice.polytech.al.drone.qrcode.captors;
 import com.google.common.eventbus.Subscribe;
 import fr.unice.polytech.al.drone.qrcode.events.EventBusService;
 import fr.unice.polytech.al.drone.qrcode.events.types.QRCodeFoundEvent;
+import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by lecpie on 1/15/16.
  */
 public class WebcamAnalyserTest {
-    private Camera camera;
+    private CameraMock camera;
     private CameraQRCodeAnalyser analyser;
 
     private Object listener;
@@ -21,7 +25,6 @@ public class WebcamAnalyserTest {
         camera = new CameraMock();
         analyser = new CameraQRCodeAnalyser(camera);
 
-        
     }
 
     @After
@@ -30,22 +33,21 @@ public class WebcamAnalyserTest {
     }
 
     @Test
-    public void testAnalyze() {
-
-        boolean failTime = true;
-
-        listener = new Object() {
-            @Subscribe
-            public void listenQRCode(QRCodeFoundEvent e) {
-
-            }
-        };
-
-        EventBusService.instance().registerSubscriber(listener);
-
+    public void testAnalyze() throws IOException {
         camera.on();
-        analyser.analyze();
-        camera.off();
 
+        File first = new File("src/test/resources/youknowlifesuckstryagain.jpeg");
+        File second = new File("src/test/resources/qrcodesareawesome.jpeg");
+
+        camera.setReturnImageFromFile(first);
+        String res1 = analyser.analyze();
+
+        camera.setReturnImageFromFile(second);
+        String res2 = analyser.analyze();
+
+        Assert.assertEquals("#YouKnowLifeSucksTryAgain", res1);
+        Assert.assertEquals("#QRCodesAreAwesomes", res2);
+
+        camera.off();
     }
 }
