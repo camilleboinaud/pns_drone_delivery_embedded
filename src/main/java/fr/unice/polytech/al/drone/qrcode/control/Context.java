@@ -1,6 +1,7 @@
 package fr.unice.polytech.al.drone.qrcode.control;
 
 import fr.unice.polytech.al.drone.qrcode.captors.CameraController;
+import fr.unice.polytech.al.drone.qrcode.control.states.ReceiveMissionState;
 import fr.unice.polytech.al.drone.qrcode.control.states.SearchingQRCodeState;
 import fr.unice.polytech.al.drone.qrcode.control.states.State;
 import fr.unice.polytech.al.drone.qrcode.events.*;
@@ -24,6 +25,10 @@ public class Context {
     private State current;
 
     private Context(){
+        reload();
+    }
+
+    public void reload() {
         try {
             flightPlan = StorageManagerFactory.getStorageManager(StorageTypeEnum.JSON).readFlightPlan();
         } catch (StorageManagerException e){
@@ -40,8 +45,11 @@ public class Context {
     }
 
     public void init(){
-        EventBusService.instance().registerSubscriber(SearchingQRCodeState.instance());
-        setState(SearchingQRCodeState.instance());
+
+        State next = new ReceiveMissionState();
+        EventBusService.instance().registerSubscriber(next);
+
+        setState(next);
     }
 
     public void setState(State state){

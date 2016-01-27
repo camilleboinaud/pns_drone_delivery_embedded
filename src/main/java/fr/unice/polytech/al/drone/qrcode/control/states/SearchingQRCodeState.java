@@ -19,9 +19,13 @@ import org.apache.logging.log4j.Logger;
 public class SearchingQRCodeState implements State {
 
     private static final Logger logger = LogManager.getLogger(SearchingQRCodeState.class.getName());
-    private static SearchingQRCodeState instance = new SearchingQRCodeState();
+    private static SearchingQRCodeState instance;
 
     private boolean runner;
+
+    private SearchingQRCodeState() {
+
+    }
 
 //    private SearchingQRCodeState(){
 //        EventBusService.instance().registerSubscriber(new CameraController());
@@ -50,7 +54,12 @@ public class SearchingQRCodeState implements State {
     }
 
     public static SearchingQRCodeState instance(){
-        return instance; //(instance != null) ? instance : new SearchingQRCodeState();
+
+        if (instance == null) {
+            instance = new SearchingQRCodeState();
+        }
+
+        return instance;
     }
 
     public void init(){

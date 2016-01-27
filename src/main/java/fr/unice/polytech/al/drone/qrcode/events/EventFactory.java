@@ -56,6 +56,14 @@ public class EventFactory {
                 if (params.length == 1 && params[0] instanceof String) {
                     return new SaveImageRequestEvent((String) params[0]);
                 }
+
+                return new SaveImageRequestEvent("proof.png");
+
+            case FLIGHT_PLAN_REQUEST:
+                return new FlightPlanRequestEvent();
+
+            case FLIGHT_PLAN_ACK:
+                return new FlightPlanAckEvent();
         }
 
         return null;
