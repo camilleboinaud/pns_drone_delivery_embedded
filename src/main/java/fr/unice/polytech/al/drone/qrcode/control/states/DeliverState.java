@@ -1,6 +1,7 @@
 package fr.unice.polytech.al.drone.qrcode.control.states;
 
 import fr.unice.polytech.al.drone.qrcode.control.Context;
+import fr.unice.polytech.al.drone.qrcode.events.EventBusService;
 import fr.unice.polytech.al.drone.qrcode.events.EventFactory;
 import fr.unice.polytech.al.drone.qrcode.events.EventTypeEnum;
 import org.apache.logging.log4j.LogManager;
@@ -20,6 +21,11 @@ public class DeliverState implements State {
     public void action() {
         logger.info("Package is being delivered");
         EventFactory.createAndPost(EventTypeEnum.DELIVERY_SUCCESS);
+
+        State next = new MailAuthentificationState();
+        EventBusService.instance().unRegisterSubscriber(this);
+        EventBusService.instance().registerSubscriber(next);
+        Context.instance().setState(next);
     }
 
     @Override

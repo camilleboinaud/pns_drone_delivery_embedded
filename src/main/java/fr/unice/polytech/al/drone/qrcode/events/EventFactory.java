@@ -17,7 +17,7 @@ public class EventFactory {
      */
     public static AbstractEvent create(EventTypeEnum eventTypeEnum, Object... params){
 
-        switch (eventTypeEnum){
+        switch (eventTypeEnum) {
             case START_AUTHENTICATION:
                 return new StartAuthenticationEvent();
             case START_SEARCHING:
@@ -25,13 +25,13 @@ public class EventFactory {
             case STOP_SEARCHING:
                 return new StopSearchingEvent();
             case QR_CODE_FOUND:
-                if(params.length == 1 && params[0] instanceof String){
-                    return new QRCodeFoundEvent((String)params[0]);
+                if (params.length == 1 && params[0] instanceof String) {
+                    return new QRCodeFoundEvent((String) params[0]);
                 }
                 break;
             case INTERRUPTION:
-                if(params.length == 1 && params[0] instanceof String){
-                    return new InterruptionEvent((String)params[0]);
+                if (params.length == 1 && params[0] instanceof String) {
+                    return new InterruptionEvent((String) params[0]);
                 }
                 return new InterruptionEvent("");
             case DELIVERY_FAILED:
@@ -40,6 +40,17 @@ public class EventFactory {
                 return new DeliverySuccessEvent();
             case SUCCESSFULL_AUTHENTICATION:
                 return new SuccessfullAuthenticationEvent();
+            case EMAIL_CONFIMATION:
+                return new EmailAuthentificationEvent();
+
+            case PROOF_GATHERED:
+                if (params.length == 1 && params[0] instanceof String) {
+                    return new ProofEvent((String) params[0]);
+                }
+                return new ProofEvent("");
+
+            case PROOF_ACK:
+                return new ProofAckEvent();
         }
 
         return null;

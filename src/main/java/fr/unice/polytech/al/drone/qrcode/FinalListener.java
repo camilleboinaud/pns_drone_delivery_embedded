@@ -4,6 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import fr.unice.polytech.al.drone.qrcode.events.types.AbstractEvent;
 import fr.unice.polytech.al.drone.qrcode.events.types.DeliveryFailedEvent;
 import fr.unice.polytech.al.drone.qrcode.events.types.DeliverySuccessEvent;
+import fr.unice.polytech.al.drone.qrcode.events.types.ProofEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,7 +16,7 @@ public class FinalListener {
     private static final Logger logger = LogManager.getLogger(FinalListener.class.getName());
 
     @Subscribe
-    public void listenDeliverySuccessEvent(DeliverySuccessEvent event){
+    public void listenDeliverySuccessEvent(ProofEvent event){
         logEvent(event);
     }
 
@@ -28,7 +29,7 @@ public class FinalListener {
     private void logEvent(AbstractEvent event){
         try {
             Thread.sleep(500);
-            logger.info(event.getType() + " as been received");
+            logger.info(event.getType() + " has been received");
             System.exit(0);
         } catch (InterruptedException e){
             e.printStackTrace();
