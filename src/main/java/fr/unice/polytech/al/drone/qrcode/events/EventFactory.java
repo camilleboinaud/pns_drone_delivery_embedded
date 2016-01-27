@@ -51,6 +51,11 @@ public class EventFactory {
 
             case PROOF_ACK:
                 return new ProofAckEvent();
+
+            case SAVE_IMAGE_REQUEST:
+                if (params.length == 1 && params[0] instanceof String) {
+                    return new SaveImageRequestEvent((String) params[0]);
+                }
         }
 
         return null;

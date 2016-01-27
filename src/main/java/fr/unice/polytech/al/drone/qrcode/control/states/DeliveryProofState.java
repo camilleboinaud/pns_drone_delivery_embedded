@@ -15,12 +15,10 @@ public class DeliveryProofState implements State {
     private boolean qrun = true;
 
     public void action() {
+
+        EventFactory.createAndPost(EventTypeEnum.SAVE_IMAGE_REQUEST, "img-gen/itheproof.png");
         while (qrun) {
             try {
-                Thread.sleep(2000);
-                // TODO take picture
-                EventFactory.createAndPost(EventTypeEnum.PROOF_GATHERED);
-
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();

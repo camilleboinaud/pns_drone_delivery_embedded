@@ -1,6 +1,8 @@
 package fr.unice.polytech.al.drone.qrcode.captors;
 
 import com.google.common.eventbus.Subscribe;
+import fr.unice.polytech.al.drone.qrcode.events.EventFactory;
+import fr.unice.polytech.al.drone.qrcode.events.EventTypeEnum;
 import fr.unice.polytech.al.drone.qrcode.events.types.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,12 +30,18 @@ public class CameraController {
         this.analyser = analyser;
     }
 
-    public boolean saveImage(String path) throws IOException {
+    public boolean saveImage(String path) {
         if (camera.isOn()) {
             BufferedImage image = camera.getImage();
 
             if (image != null) {
-                ImageIO.write(image, "PNG", new File(path));
+                try {
+                    ImageIO.write(image, "PNG", new File(path));
+
+                    return true;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -57,6 +65,19 @@ public class CameraController {
         analyserRunnable.stop();
 
         camera.off();
+    }
+
+    @Subscribe
+    public void saveImage(SaveImageRequestEvent e) throws IOException {
+        String path = e.getPath();
+        if (!saveImage(e.getPath())) {
+            if (!saveImage("proof.png")) {
+                saveImage("/tmp/proof.png");
+            }
+        }
+
+        EventFactory.createAndPost(EventTypeEnum.PROOF_GATHERED);
+
     }
 
 }

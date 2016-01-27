@@ -15,6 +15,7 @@ public enum EventTypeEnum {
     DELIVERY_SUCCESS,
     PROOF_GATHERED,
     EMAIL_CONFIMATION,
-    PROOF_ACK;
+    PROOF_ACK,
+    SAVE_IMAGE_REQUEST;
 
 }
