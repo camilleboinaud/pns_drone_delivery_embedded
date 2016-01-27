@@ -69,7 +69,7 @@ public class SarxosCameraTest {
     public void testGetImageRush() {
         camera.on();
 
-        int ntest = 1000;
+        int ntest = 50;
         for (int i = 0; i < ntest; ++i) {
             Assert.assertNotNull("Did not get an image from webcam", camera.getImage());
         }

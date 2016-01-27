@@ -5,6 +5,11 @@ import fr.unice.polytech.al.drone.qrcode.events.types.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
 
 /**
  * Created by camille on 10/11/15.
@@ -21,6 +26,18 @@ public class CameraController {
     public CameraController(CameraAnalyser analyser, Camera camera) {
         this.camera   = camera;
         this.analyser = analyser;
+    }
+
+    public boolean saveImage(String path) throws IOException {
+        if (camera.isOn()) {
+            BufferedImage image = camera.getImage();
+
+            if (image != null) {
+                ImageIO.write(image, "PNG", new File(path));
+            }
+        }
+
+        return false;
     }
 
     @Subscribe

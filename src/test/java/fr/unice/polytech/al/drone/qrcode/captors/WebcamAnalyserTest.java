@@ -1,6 +1,7 @@
 package fr.unice.polytech.al.drone.qrcode.captors;
 
 import com.google.common.eventbus.Subscribe;
+import fr.unice.polytech.al.drone.qrcode.TestResources;
 import fr.unice.polytech.al.drone.qrcode.events.EventBusService;
 import fr.unice.polytech.al.drone.qrcode.events.types.QRCodeFoundEvent;
 import junit.framework.Assert;
@@ -36,8 +37,8 @@ public class WebcamAnalyserTest {
     public void testAnalyze() throws IOException {
         camera.on();
 
-        File first = new File("src/test/resources/youknowlifesuckstryagain.jpeg");
-        File second = new File("src/test/resources/qrcodesareawesome.jpeg");
+        File first = new File(TestResources.YOUKNOWLIFESUCKS);
+        File second = new File(TestResources.QRCODESAREAWESOME);
 
         camera.setReturnImageFromFile(first);
         String res1 = analyser.analyze();
