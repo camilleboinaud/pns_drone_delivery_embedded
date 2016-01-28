@@ -13,43 +13,49 @@ public class FlightPlan {
     protected Customer customer;
     protected Order order;
     protected long timeout;
+    protected long droneID;
 
     public FlightPlan(){
         order = new Order();
         customer = new Customer();
         timeout = 30000; //20 minutes timeout
+        droneID = 0; //20 minutes timeout
     }
 
-    public FlightPlan(Order order, Customer customer){
+    public FlightPlan(Order order, Customer customer, long droneID){
         this.order = order;
         this.customer = customer;
         timeout = 30000;
+        this.droneID = droneID;
     }
 
-    public FlightPlan(Order order, Customer customer, long timeout) {
+    public FlightPlan(Order order, Customer customer, long timeout, long droneID) {
         this.order = order;
         this.customer = customer;
         this.timeout = timeout;
+        this.droneID = droneID;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof FlightPlan)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         FlightPlan that = (FlightPlan) o;
 
-        if (getCustomer() != null ? !getCustomer().equals(that.getCustomer()) : that.getCustomer() != null)
-            return false;
-        if (getOrder() != null ? !getOrder().equals(that.getOrder()) : that.getOrder() != null) return false;
-        return !(getTimeout() != 0 ? getTimeout() != that.getTimeout() : that.getTimeout() != 0);
+        if (timeout != that.timeout) return false;
+        if (droneID != that.droneID) return false;
+        if (customer != null ? !customer.equals(that.customer) : that.customer != null) return false;
+        return order != null ? order.equals(that.order) : that.order == null;
+
     }
 
     @Override
     public int hashCode() {
-        int result = getCustomer() != null ? getCustomer().hashCode() : 0;
-        result = 31 * result + (getOrder() != null ? getOrder().hashCode() : 0);
-        result = 31 * result + (getTimeout() != 0 ? (int)getTimeout() : 31);
+        int result = customer != null ? customer.hashCode() : 0;
+        result = 31 * result + (order != null ? order.hashCode() : 0);
+        result = 31 * result + (int) (timeout ^ (timeout >>> 32));
+        result = 31 * result + (int) (droneID ^ (droneID >>> 32));
         return result;
     }
 
@@ -75,6 +81,14 @@ public class FlightPlan {
 
     public void setTimeout(long timeout) {
         this.timeout = timeout;
+    }
+
+    public long getDroneID() {
+        return droneID;
+    }
+
+    public void setDroneID(long droneID) {
+        this.droneID = droneID;
     }
 
     @Override

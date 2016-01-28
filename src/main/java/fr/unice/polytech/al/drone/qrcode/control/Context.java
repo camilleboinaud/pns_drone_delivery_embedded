@@ -1,11 +1,8 @@
 package fr.unice.polytech.al.drone.qrcode.control;
 
-import fr.unice.polytech.al.drone.qrcode.captors.CameraController;
 import fr.unice.polytech.al.drone.qrcode.control.states.ReceiveMissionState;
-import fr.unice.polytech.al.drone.qrcode.control.states.SearchingQRCodeState;
 import fr.unice.polytech.al.drone.qrcode.control.states.State;
 import fr.unice.polytech.al.drone.qrcode.events.*;
-import fr.unice.polytech.al.drone.qrcode.infrastructure.*;
 import fr.unice.polytech.al.drone.qrcode.model.FlightPlan;
 import fr.unice.polytech.al.drone.qrcode.utils.StorageTypeEnum;
 import org.apache.logging.log4j.LogManager;

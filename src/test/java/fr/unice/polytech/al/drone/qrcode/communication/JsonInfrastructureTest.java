@@ -1,5 +1,6 @@
-package fr.unice.polytech.al.drone.qrcode.infrastructure;
+package fr.unice.polytech.al.drone.qrcode.communication;
 
+import fr.unice.polytech.al.drone.qrcode.communication.mapping.DataRequestMapperAPI;
 import fr.unice.polytech.al.drone.qrcode.model.FlightPlan;
 import fr.unice.polytech.al.drone.qrcode.utils.StorageTypeEnum;
 import org.apache.logging.log4j.LogManager;
@@ -18,7 +19,7 @@ import static org.junit.Assert.fail;
 public class JsonInfrastructureTest {
 
     private static final Logger logger = LogManager.getLogger(JsonInfrastructureTest.class.getName());
-    private StorageManager storageManager;
+    private DataRequestMapperAPI storageManager;
 
     @BeforeClass
     public static void setUpClass(){
