@@ -26,11 +26,7 @@ public class Context {
     }
 
     public void reload() {
-        try {
-            flightPlan = StorageManagerFactory.getStorageManager(StorageTypeEnum.JSON).readFlightPlan();
-        } catch (StorageManagerException e){
-            e.printStackTrace();
-        }
+
     }
 
     public static Context instance(){
