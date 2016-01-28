@@ -19,16 +19,6 @@ public interface DataRequestMapperAPI {
      */
     FlightPlan saveFlightPlan(JSONObject flightPlan);
 
-
-    /**
-     * This method allows to get request's body used to query server about
-     * flight plan.
-     *
-     * @return
-     *      json request
-     */
-    JSONObject getFlightPlanRequest();
-
     /**
      * This method allows to get request's body used to query server about
      * mail authentication.
@@ -45,6 +35,6 @@ public interface DataRequestMapperAPI {
      * @return
      *      map containing all fields required by multipart request
      */
-    Map<String, Object> getDeliveryAcknowledgementRequest();
+    Map<String, Object> getDeliveryAcknowledgementRequest(String imagePath);
 
 }

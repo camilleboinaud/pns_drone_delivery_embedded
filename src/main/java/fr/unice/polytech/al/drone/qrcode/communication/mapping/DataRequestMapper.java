@@ -1,9 +1,18 @@
 package fr.unice.polytech.al.drone.qrcode.communication.mapping;
 
+import fr.unice.polytech.al.drone.qrcode.control.Context;
+import fr.unice.polytech.al.drone.qrcode.model.Coordinate;
+import fr.unice.polytech.al.drone.qrcode.model.Customer;
 import fr.unice.polytech.al.drone.qrcode.model.FlightPlan;
+import fr.unice.polytech.al.drone.qrcode.model.Order;
+import fr.unice.polytech.al.drone.qrcode.utils.StaticStorageUtils;
 import org.json.simple.JSONObject;
 
+import java.io.File;
+import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by cboinaud on 28/01/16.
@@ -18,19 +27,28 @@ public class DataRequestMapper implements DataRequestMapperAPI {
      *      flight plan read from storage system
      */
     public FlightPlan saveFlightPlan(JSONObject flightPlan) {
-        return null;
+
+        JSONObject flightPlanJSON = (JSONObject)flightPlan.get("flightPlan");
+        long droneID = Long.parseLong((String)flightPlan.get("droneId"));
+        JSONObject customerJSON = (JSONObject)flightPlanJSON.get("customer");
+
+        JSONObject coordinateJSON = (JSONObject)customerJSON.get("coordinates");
+
+        Customer customer = new Customer(
+                (String)customerJSON.get("name"),
+                new Coordinate((Double)coordinateJSON.get("longitude"), (Double)coordinateJSON.get("latitude"))
+        );
+
+        JSONObject orderJSON = (JSONObject)flightPlanJSON.get("order");
+
+        Order order = new Order(
+                LocalTime.ofNanoOfDay(TimeUnit.MILLISECONDS.toNanos((Long) orderJSON.get("deliveryTime"))),
+                (String)orderJSON.get("qrCodeValue")
+        );
+
+        return new FlightPlan(order, customer, (Long)flightPlanJSON.get("timeout"), droneID);
     }
 
-    /**
-     * This method allows to get request's body used to query server about
-     * flight plan.
-     *
-     * @return
-     *      json request
-     */
-    public JSONObject getFlightPlanRequest() {
-        return null;
-    }
 
     /**
      * This method allows to get request's body used to query server about
@@ -40,7 +58,11 @@ public class DataRequestMapper implements DataRequestMapperAPI {
      *      json request
      */
     public JSONObject getMailAuthenticationRequest() {
-        return null;
+
+        JSONObject result = new JSONObject();
+        result.put("droneID", StaticStorageUtils.FLIGHT_PLAN.getDroneID());
+
+        return result;
     }
 
     /**
@@ -50,8 +72,19 @@ public class DataRequestMapper implements DataRequestMapperAPI {
      * @return
      *      map containing all fields required by multipart request
      */
-    public Map<String, Object> getDeliveryAcknowledgementRequest() {
-        return null;
+    public Map<String, Object> getDeliveryAcknowledgementRequest(String imagePath) {
+
+        Map<String, Object> data = new HashMap<String, Object>();
+        JSONObject request = new JSONObject();
+        request.put("droneID", StaticStorageUtils.FLIGHT_PLAN.getDroneID());
+
+        File image = new File(imagePath);
+
+        data.put("json", request);
+        data.put("image", image);
+
+        return data;
+
     }
 
 }

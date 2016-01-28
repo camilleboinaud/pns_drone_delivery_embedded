@@ -4,7 +4,7 @@ import fr.unice.polytech.al.drone.qrcode.control.states.ReceiveMissionState;
 import fr.unice.polytech.al.drone.qrcode.control.states.State;
 import fr.unice.polytech.al.drone.qrcode.events.*;
 import fr.unice.polytech.al.drone.qrcode.model.FlightPlan;
-import fr.unice.polytech.al.drone.qrcode.utils.StorageTypeEnum;
+import fr.unice.polytech.al.drone.qrcode.utils.StaticStorageUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,7 +26,7 @@ public class Context {
     }
 
     public void reload() {
-
+        flightPlan = StaticStorageUtils.FLIGHT_PLAN;
     }
 
     public static Context instance(){

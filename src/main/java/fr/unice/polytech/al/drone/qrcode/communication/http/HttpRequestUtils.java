@@ -29,7 +29,7 @@ public class HttpRequestUtils {
      * @return
      *      JSONObject : response body
      */
-    public static JSONObject getRequest(String url, Pair<String, String> ... parameters){
+    public static JSONObject getRequest(String url, Pair<String, String> ... parameters) throws RuntimeException {
         try {
 
             // Query parameters construction
@@ -84,7 +84,7 @@ public class HttpRequestUtils {
      * @return
      *      JSONObject : response body
      */
-    public static JSONObject postRequest(String url, JSONObject requestBody){
+    public static JSONObject postRequest(String url, JSONObject requestBody) throws RuntimeException {
 
         try {
             HttpClient client = new DefaultHttpClient();
@@ -142,7 +142,8 @@ public class HttpRequestUtils {
      * @return
      *      JSONObject : response body
      */
-    public static JSONObject postJsonImageMultipartRequest(String url, JSONObject jsonObject, File image){
+    public static JSONObject postJsonImageMultipartRequest(String url, JSONObject jsonObject, File image)
+        throws RuntimeException {
 
         try {
             HttpClient client = new DefaultHttpClient();
