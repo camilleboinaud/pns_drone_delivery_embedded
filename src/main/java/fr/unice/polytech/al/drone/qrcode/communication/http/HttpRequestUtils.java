@@ -88,7 +88,7 @@ public class HttpRequestUtils {
 
         try {
             HttpClient client = new DefaultHttpClient();
-            HttpPost post = new HttpPost(url);
+            HttpPost post = new HttpPost("http://localhost:4000/api/mailauth");
 
             StringEntity content = new StringEntity(requestBody.toJSONString());
 

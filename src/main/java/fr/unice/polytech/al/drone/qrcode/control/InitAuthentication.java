@@ -22,16 +22,7 @@ public class InitAuthentication {
     private Timer timer;
 
     public InitAuthentication(){
-        timer = new Timer();
-        timer.schedule(
-                new TimerTask() {
-                    @Override
-                    public void run() {
-                        EventFactory.createAndPost(EventTypeEnum.INTERRUPTION, "timeout expired");
-                    }
-                },
-                Context.instance().getFlightPlan().getTimeout()
-        );
+
     }
 
     /**

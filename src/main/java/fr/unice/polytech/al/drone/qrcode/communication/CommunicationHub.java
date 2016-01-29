@@ -6,9 +6,7 @@ import fr.unice.polytech.al.drone.qrcode.communication.mapping.DataRequestMapper
 import fr.unice.polytech.al.drone.qrcode.events.EventBusService;
 import fr.unice.polytech.al.drone.qrcode.events.EventFactory;
 import fr.unice.polytech.al.drone.qrcode.events.EventTypeEnum;
-import fr.unice.polytech.al.drone.qrcode.events.types.FlightPlanRequestEvent;
-import fr.unice.polytech.al.drone.qrcode.events.types.SaveImageRequestEvent;
-import fr.unice.polytech.al.drone.qrcode.events.types.SuccessfullAuthenticationEvent;
+import fr.unice.polytech.al.drone.qrcode.events.types.*;
 import fr.unice.polytech.al.drone.qrcode.utils.StaticStorageUtils;
 import org.json.simple.JSONObject;
 
@@ -53,13 +51,14 @@ public class CommunicationHub {
         try {
 
             JSONObject result = HttpRequestUtils.postRequest(
-                    StaticStorageUtils.SERVER_URL + "/apî/mailauth", dataRequestMapper.getMailAuthenticationRequest()
+                    StaticStorageUtils.SERVER_URL + "apî/mailauth", dataRequestMapper.getMailAuthenticationRequest()
             );
 
             if ((Boolean) (((JSONObject) result.get("mailauth")).get("result"))) {
                 EventFactory.createAndPost(EventTypeEnum.EMAIL_CONFIMATION);
             } else {
-                //TODO talk with Pierre
+                EventFactory.createAndPost(EventTypeEnum.INTERRUPTION,
+                        (String) (((JSONObject) result.get("mailauth")).get("message")));
             }
 
         } catch (RuntimeException e){
@@ -74,15 +73,15 @@ public class CommunicationHub {
      * @param event
      */
     @Subscribe
-    public void deliverySuccessAcknowledgementQuery(SaveImageRequestEvent event){
+    public void deliverySuccessAcknowledgementQuery(ProofSendRequestEvent event){
         try {
 
-            Map<String, Object> data = dataRequestMapper.getDeliveryAcknowledgementRequest(event.getPath());
+            Map<String, Object> data = dataRequestMapper.getDeliveryAcknowledgementRequest("img-gen/itheproof.png");
             JSONObject result = HttpRequestUtils.postJsonImageMultipartRequest(
                     StaticStorageUtils.SERVER_URL + "api/deliveryack", (JSONObject) data.get("json"), (File) data.get("image")
             );
 
-            //TODO discuss sucess/fail return format
+            EventFactory.createAndPost(EventTypeEnum.PROOF_ACK);
 
         } catch (RuntimeException e){
             e.printStackTrace();

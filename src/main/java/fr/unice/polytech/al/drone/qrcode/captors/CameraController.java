@@ -67,6 +67,8 @@ public class CameraController {
         camera.off();
     }
 
+
+
     @Subscribe
     public void saveImage(SaveImageRequestEvent e) throws IOException {
         String path = e.getPath();

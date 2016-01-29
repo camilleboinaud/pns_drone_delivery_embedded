@@ -2,6 +2,8 @@ package fr.unice.polytech.al.drone.qrcode.control.states;
 
 import com.google.common.eventbus.Subscribe;
 import fr.unice.polytech.al.drone.qrcode.events.EventBusService;
+import fr.unice.polytech.al.drone.qrcode.events.EventFactory;
+import fr.unice.polytech.al.drone.qrcode.events.EventTypeEnum;
 import fr.unice.polytech.al.drone.qrcode.events.types.ProofAckEvent;
 
 /**
@@ -10,7 +12,7 @@ import fr.unice.polytech.al.drone.qrcode.events.types.ProofAckEvent;
 public class SendProofState implements State {
     private boolean qrun = true;
 
-    private static final int RETRY = 2000;
+    private static final int RETRY = 20000;
 
     public void action() {
 
@@ -18,7 +20,7 @@ public class SendProofState implements State {
 
         while (qrun) {
             if (System.currentTimeMillis() > lastsend + RETRY) {
-                // TODO Send image here
+                EventFactory.createAndPost(EventTypeEnum.PROOF_SEND_REQUEST);
             }
 
             try {

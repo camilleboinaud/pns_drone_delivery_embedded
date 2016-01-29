@@ -21,12 +21,6 @@ public class MailAuthentificationState implements State {
 
         try {
             while (qrun) {
-                // TODO Communication : wait for email confirmation
-                // Mock communication time
-                if (System.currentTimeMillis() > start + 3000) {
-                    EventFactory.createAndPost(EventTypeEnum.EMAIL_CONFIMATION);
-                }
-
                 Thread.sleep(100);
             }
         } catch (InterruptedException e){

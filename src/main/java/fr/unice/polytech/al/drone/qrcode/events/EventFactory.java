@@ -64,6 +64,12 @@ public class EventFactory {
 
             case FLIGHT_PLAN_ACK:
                 return new FlightPlanAckEvent();
+
+            case TIMEOUT_START:
+                return new StartTimerEvent();
+
+            case PROOF_SEND_REQUEST:
+                return new ProofSendRequestEvent();
         }
 
         return null;

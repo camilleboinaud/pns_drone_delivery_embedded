@@ -1,12 +1,18 @@
 package fr.unice.polytech.al.drone.qrcode.control;
 
+import com.google.common.eventbus.Subscribe;
+import fr.unice.polytech.al.drone.qrcode.communication.CommunicationHub;
 import fr.unice.polytech.al.drone.qrcode.control.states.ReceiveMissionState;
 import fr.unice.polytech.al.drone.qrcode.control.states.State;
 import fr.unice.polytech.al.drone.qrcode.events.*;
+import fr.unice.polytech.al.drone.qrcode.events.types.StartTimerEvent;
 import fr.unice.polytech.al.drone.qrcode.model.FlightPlan;
 import fr.unice.polytech.al.drone.qrcode.utils.StaticStorageUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by remy on 06/11/15.
@@ -20,6 +26,7 @@ public class Context {
 
     private FlightPlan flightPlan;
     private State current;
+    private CommunicationHub hub;
 
     private Context(){
         reload();
@@ -27,6 +34,26 @@ public class Context {
 
     public void reload() {
         flightPlan = StaticStorageUtils.FLIGHT_PLAN;
+    }
+
+    private Timer timer;
+
+    public void runTimer() {
+        System.out.println("I'm in");
+
+        timer = new Timer();
+        timer.schedule(
+                new TimerTask() {
+                    @Override
+                    public void run() {
+                        EventFactory.createAndPost(EventTypeEnum.INTERRUPTION, "timeout expired");
+                    }
+                },
+                flightPlan.getTimeout()
+        );
+
+        System.out.println("I'm out");
+
     }
 
     public static Context instance(){
@@ -40,6 +67,8 @@ public class Context {
     public void init(){
 
         State next = new ReceiveMissionState();
+        hub = new CommunicationHub();
+        EventBusService.instance().registerSubscriber(hub);
         EventBusService.instance().registerSubscriber(next);
 
         setState(next);
