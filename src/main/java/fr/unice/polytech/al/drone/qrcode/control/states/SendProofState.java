@@ -12,17 +12,11 @@ import fr.unice.polytech.al.drone.qrcode.events.types.ProofAckEvent;
 public class SendProofState implements State {
     private boolean qrun = true;
 
-    private static final int RETRY = 20000;
-
     public void action() {
 
-        long lastsend = 0;
+        EventFactory.createAndPost(EventTypeEnum.PROOF_SEND_REQUEST);
 
         while (qrun) {
-            if (System.currentTimeMillis() > lastsend + RETRY) {
-                EventFactory.createAndPost(EventTypeEnum.PROOF_SEND_REQUEST);
-            }
-
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {

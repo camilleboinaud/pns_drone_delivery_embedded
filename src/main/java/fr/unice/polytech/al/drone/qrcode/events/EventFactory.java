@@ -76,6 +76,9 @@ public class EventFactory {
 
             case SUCCESSFUL_MAIL_AUTH:
                 return new SuccessfulMailAuthEvent();
+
+            case MAIL_STATUS_REQUEST:
+                return new MailStatusRequestEvent();
         }
 
         return null;

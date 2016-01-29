@@ -17,9 +17,10 @@ public class MailAuthentificationState implements State {
     public void action() {
         System.out.println("Waiting for email confirmation");
 
+        EventFactory.createAndPost(EventTypeEnum.REQUEST_MAIL_AUTH);
             while (qrun) {
                 try {
-                    EventFactory.createAndPost(EventTypeEnum.REQUEST_MAIL_AUTH);
+                    EventFactory.createAndPost(EventTypeEnum.MAIL_STATUS_REQUEST);
                     Thread.sleep(5000);
 
                 } catch (InterruptedException e){

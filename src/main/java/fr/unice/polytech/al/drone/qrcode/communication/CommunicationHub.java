@@ -54,18 +54,19 @@ public class CommunicationHub {
                     StaticStorageUtils.SERVER_URL + "mail/authentication?userId=" + Context.instance().getFlightPlan().getCustomer().getId(), dataRequestMapper.getMailAuthenticationRequest()
             );
 
-            if ((Boolean) (((JSONObject) result.get("mailauth")).get("result"))) {
-                EventFactory.createAndPost(EventTypeEnum.EMAIL_CONFIMATION);
-            } else {
-                EventFactory.createAndPost(EventTypeEnum.INTERRUPTION,
-                        (String) (((JSONObject) result.get("mailauth")).get("message")));
-            }
-
         } catch (RuntimeException e){
             e.printStackTrace();
             EventFactory.createAndPost(EventTypeEnum.INTERRUPTION);
         }
 
+    }
+
+    @Subscribe
+    public void mailAuthenticationStatusQuery(MailStatusRequestEvent e) {
+
+        //TODO check status on server
+
+        EventFactory.createAndPost(EventTypeEnum.EMAIL_CONFIMATION);
     }
 
     /**
