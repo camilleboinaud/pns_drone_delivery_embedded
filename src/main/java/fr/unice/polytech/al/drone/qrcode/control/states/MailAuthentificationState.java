@@ -15,17 +15,17 @@ public class MailAuthentificationState implements State {
     private boolean qrun = true;
 
     public void action() {
-        System.out.println("Waiting for email confirmation, mocked 3 seconds");
+        System.out.println("Waiting for email confirmation");
 
-        long start = System.currentTimeMillis();
-
-        try {
             while (qrun) {
-                Thread.sleep(100);
+                try {
+                    EventFactory.createAndPost(EventTypeEnum.REQUEST_MAIL_AUTH);
+                    Thread.sleep(5000);
+
+                } catch (InterruptedException e){
+                    e.printStackTrace();
+                }
             }
-        } catch (InterruptedException e){
-            e.printStackTrace();
-        }
 
         EventBusService.instance().unRegisterSubscriber(this);
 

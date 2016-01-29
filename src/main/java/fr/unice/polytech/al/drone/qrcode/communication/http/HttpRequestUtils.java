@@ -1,5 +1,6 @@
 package fr.unice.polytech.al.drone.qrcode.communication.http;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -7,9 +8,12 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.bridj.util.Pair;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -88,7 +92,7 @@ public class HttpRequestUtils {
 
         try {
             HttpClient client = new DefaultHttpClient();
-            HttpPost post = new HttpPost("http://localhost:4000/api/mailauth");
+            HttpPost post = new HttpPost(url);
 
             StringEntity content = new StringEntity(requestBody.toJSONString());
 
@@ -146,51 +150,27 @@ public class HttpRequestUtils {
         throws RuntimeException {
 
         try {
-            HttpClient client = new DefaultHttpClient();
-            HttpPost post = new HttpPost(url);
+            HttpClient httpclient = HttpClientBuilder.create().build();
+            HttpPost httppost = new HttpPost(url);
 
-            FileBody file = new FileBody(image);
-            StringBody json = new StringBody(jsonObject.toJSONString());
+            HttpEntity entity = MultipartEntityBuilder.create()
+                    .addBinaryBody("file", image)
+                    .addTextBody("name", "remy")
+                    .build();
 
-            post.addHeader("Accept", "application/json");
-            post.addHeader("Content-Type", "multipart/form-data;boundary=MySuperBoundary");
+            httppost.setEntity(entity);
+            System.out.println("executing request " + httppost.getRequestLine());
+            HttpResponse response = httpclient.execute(httppost);
+            HttpEntity resEntity = response.getEntity();
 
-            MultipartEntity request = new MultipartEntity();
-            request.addPart("image", file);
-            request.addPart("json", json);
+            System.out.println(response.getStatusLine());
 
-            post.setEntity(request);
-
-            HttpResponse response = client.execute(post);
-
-            // Checks response status code
-            if(response.getStatusLine().getStatusCode() != 200){
-                throw new RuntimeException("HTTP/GET request failed with error code "
-                        + response.getStatusLine().getStatusCode());
+            if (resEntity != null) {
+                System.out.println(EntityUtils.toString(resEntity));
             }
-
-            // Read response body and transform it into String
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(response.getEntity().getContent())
-            );
-
-            String result = "", line;
-            while ((line = reader.readLine()) != null){
-                result += line;
+            if (resEntity != null) {
+                resEntity.consumeContent();
             }
-
-            // Shutting down connection
-            client.getConnectionManager().shutdown();
-
-            // Returns response content
-            return ((JSONObject) new JSONParser().parse(result));
-
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -199,7 +179,7 @@ public class HttpRequestUtils {
     }
 
     public static void main(String[] args) throws ParseException {
-
+        /*
         //Testing get json flight plan OK
         System.out.println(getRequest("http://localhost:4000/api/flightplan").toJSONString());
 
@@ -208,7 +188,7 @@ public class HttpRequestUtils {
         System.out.println(postRequest("http://localhost:4000/api/mailauth", obj).toJSONString());
 
         System.out.println(postJsonImageMultipartRequest("http://localhost:4000/api/deliveryack", obj, new File("img-gen/itheproof.png")).toJSONString());
-
+        */
     }
 
 }

@@ -9,36 +9,14 @@ import java.io.Serializable;
  * Created by camille on 06/11/15.
  */
 public class Customer {
-    protected String name;
-    protected Coordinate coordinates;
+    protected String id;
 
-    public Customer(){
-        name = "mockedName";
-        coordinates = new Coordinate(48.8534100, 2.3488000);
+    public Coordinate getCoordinates() {
+        return coordinates;
     }
 
-    public Customer(String name, Coordinate coordinates) {
-        this.name = name;
+    public void setCoordinates(Coordinate coordinates) {
         this.coordinates = coordinates;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Customer)) return false;
-
-        Customer customer = (Customer) o;
-
-        if (getName() != null ? !getName().equals(customer.getName()) : customer.getName() != null) return false;
-        return !(getCoordinates() != null ? !getCoordinates().equals(customer.getCoordinates()) : customer.getCoordinates() != null);
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = getName() != null ? getName().hashCode() : 0;
-        result = 31 * result + (getCoordinates() != null ? getCoordinates().hashCode() : 0);
-        return result;
     }
 
     public String getName() {
@@ -49,21 +27,55 @@ public class Customer {
         this.name = name;
     }
 
-    public Coordinate getCoordinates() {
-        return coordinates;
+    public String getId() {
+        return id;
     }
 
-    public void setCoordinates(Coordinate coordinates) {
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    protected String name;
+    protected Coordinate coordinates;
+
+    public Customer(){
+        name = "mockedName";
+        coordinates = new Coordinate(48.8534100, 2.3488000);
+    }
+
+    public Customer(String id, String name, Coordinate coordinates) {
+        this.id = id;
+        this.name = name;
         this.coordinates = coordinates;
     }
 
     @Override
     public String toString() {
-        JSONObject o = new JSONObject();
+        return "Customer{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", coordinates=" + coordinates +
+                '}';
+    }
 
-        o.put("name", name);
-        o.put("coordinates", coordinates);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        return o.toJSONString();
+        Customer customer = (Customer) o;
+
+        if (id != null ? !id.equals(customer.id) : customer.id != null) return false;
+        if (name != null ? !name.equals(customer.name) : customer.name != null) return false;
+        return !(coordinates != null ? !coordinates.equals(customer.coordinates) : customer.coordinates != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (coordinates != null ? coordinates.hashCode() : 0);
+        return result;
     }
 }

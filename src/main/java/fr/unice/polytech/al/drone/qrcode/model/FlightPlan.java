@@ -13,51 +13,29 @@ public class FlightPlan {
     protected Customer customer;
     protected Order order;
     protected long timeout;
-    protected long droneID;
+    protected String id;
 
     public FlightPlan(){
         order = new Order();
         customer = new Customer();
         timeout = 30000; //20 minutes timeout
-        droneID = 0; //20 minutes timeout
+        id = "0"; //20 minutes timeout
     }
 
-    public FlightPlan(Order order, Customer customer, long droneID){
+    public FlightPlan(Order order, Customer customer, String id){
         this.order = order;
         this.customer = customer;
         timeout = 30000;
-        this.droneID = droneID;
+        this.id = id;
     }
 
-    public FlightPlan(Order order, Customer customer, long timeout, long droneID) {
+    public FlightPlan(Order order, Customer customer, long timeout, String id) {
         this.order = order;
         this.customer = customer;
         this.timeout = timeout;
-        this.droneID = droneID;
+        this.id = id;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        FlightPlan that = (FlightPlan) o;
-
-        if (timeout != that.timeout) return false;
-        if (droneID != that.droneID) return false;
-        if (customer != null ? !customer.equals(that.customer) : that.customer != null) return false;
-        return order != null ? order.equals(that.order) : that.order == null;
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = customer != null ? customer.hashCode() : 0;
-        result = 31 * result + (order != null ? order.hashCode() : 0);
-        result = 31 * result + (int) (timeout ^ (timeout >>> 32));
-        result = 31 * result + (int) (droneID ^ (droneID >>> 32));
-        return result;
-    }
 
     public Customer getCustomer() {
         return customer;
@@ -83,12 +61,12 @@ public class FlightPlan {
         this.timeout = timeout;
     }
 
-    public long getDroneID() {
-        return droneID;
+    public String getId() {
+        return id;
     }
 
-    public void setDroneID(long droneID) {
-        this.droneID = droneID;
+    public void setDroneID(String id) {
+        this.id = id;
     }
 
     @Override

@@ -3,6 +3,7 @@ package fr.unice.polytech.al.drone.qrcode.communication;
 import com.google.common.eventbus.Subscribe;
 import fr.unice.polytech.al.drone.qrcode.communication.http.HttpRequestUtils;
 import fr.unice.polytech.al.drone.qrcode.communication.mapping.DataRequestMapper;
+import fr.unice.polytech.al.drone.qrcode.control.Context;
 import fr.unice.polytech.al.drone.qrcode.events.EventBusService;
 import fr.unice.polytech.al.drone.qrcode.events.EventFactory;
 import fr.unice.polytech.al.drone.qrcode.events.EventTypeEnum;
@@ -30,7 +31,7 @@ public class CommunicationHub {
         try {
 
             StaticStorageUtils.FLIGHT_PLAN = dataRequestMapper.saveFlightPlan(
-                    HttpRequestUtils.getRequest(StaticStorageUtils.SERVER_URL + "api/flightplan")
+                    HttpRequestUtils.getRequest(StaticStorageUtils.SERVER_URL + "flightPlan/assign")
             );
             EventFactory.createAndPost(EventTypeEnum.FLIGHT_PLAN_ACK);
 
@@ -47,11 +48,10 @@ public class CommunicationHub {
      * @param event
      */
     @Subscribe
-    public void mailAuthenticationQuery(SuccessfullAuthenticationEvent event){
+    public void mailAuthenticationQuery(RequestMailAuthEvent event){
         try {
-
             JSONObject result = HttpRequestUtils.postRequest(
-                    StaticStorageUtils.SERVER_URL + "apî/mailauth", dataRequestMapper.getMailAuthenticationRequest()
+                    StaticStorageUtils.SERVER_URL + "mail/authentication?userId=" + Context.instance().getFlightPlan().getCustomer().getId(), dataRequestMapper.getMailAuthenticationRequest()
             );
 
             if ((Boolean) (((JSONObject) result.get("mailauth")).get("result"))) {
@@ -78,7 +78,7 @@ public class CommunicationHub {
 
             Map<String, Object> data = dataRequestMapper.getDeliveryAcknowledgementRequest("img-gen/itheproof.png");
             JSONObject result = HttpRequestUtils.postJsonImageMultipartRequest(
-                    StaticStorageUtils.SERVER_URL + "api/deliveryack", (JSONObject) data.get("json"), (File) data.get("image")
+                    StaticStorageUtils.SERVER_URL + "upload/picture", (JSONObject) data.get("json"), (File) data.get("image")
             );
 
             EventFactory.createAndPost(EventTypeEnum.PROOF_ACK);

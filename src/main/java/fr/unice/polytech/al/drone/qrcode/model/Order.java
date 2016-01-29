@@ -19,17 +19,17 @@ import java.util.concurrent.TimeUnit;
  */
 public class Order {
 
-    protected LocalTime deliveryTime;
+    protected Date deliveryTime;
     protected String qrCodeValue;
 
     public Order(){
-        deliveryTime = LocalTime.now();
-        deliveryTime.plus(30, ChronoUnit.MINUTES);
+        deliveryTime = new Date();
+        //deliveryTime.plus(30, ChronoUnit.MINUTES);
 
         qrCodeValue = "#QRCodesAreAwesomes";
     }
 
-    public Order(LocalTime deliveryTime, String qrCodeValue) {
+    public Order(Date deliveryTime, String qrCodeValue) {
         this.deliveryTime = deliveryTime;
         this.qrCodeValue = qrCodeValue;
     }
@@ -54,11 +54,11 @@ public class Order {
         return result;
     }
 
-    public LocalTime getDeliveryDate() {
+    public Date getDeliveryDate() {
         return deliveryTime;
     }
 
-    public void setDeliveryDate(LocalTime deliveryTime) {
+    public void setDeliveryDate(Date deliveryTime) {
         this.deliveryTime = deliveryTime;
     }
 
@@ -74,7 +74,7 @@ public class Order {
     public String toString() {
         JSONObject o = new JSONObject();
 
-        o.put("deliveryTime",  TimeUnit.NANOSECONDS.toMillis(deliveryTime.toNanoOfDay()));
+        o.put("deliveryTime", deliveryTime.getTime());
         o.put("qrCodeValue", qrCodeValue);
 
         return o.toJSONString();

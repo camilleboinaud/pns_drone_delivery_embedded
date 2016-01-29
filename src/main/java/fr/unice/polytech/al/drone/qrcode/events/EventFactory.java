@@ -70,6 +70,12 @@ public class EventFactory {
 
             case PROOF_SEND_REQUEST:
                 return new ProofSendRequestEvent();
+
+            case REQUEST_MAIL_AUTH:
+                return new RequestMailAuthEvent();
+
+            case SUCCESSFUL_MAIL_AUTH:
+                return new SuccessfulMailAuthEvent();
         }
 
         return null;
