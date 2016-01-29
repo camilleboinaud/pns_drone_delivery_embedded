@@ -29,7 +29,7 @@ public class MailAuthentificationState implements State {
 
         EventBusService.instance().unRegisterSubscriber(this);
 
-        State next = new DeliveryProofState();
+        State next = new DeliverState();
         EventBusService.instance().registerSubscriber(next);
         Context.instance().setState(next);
     }

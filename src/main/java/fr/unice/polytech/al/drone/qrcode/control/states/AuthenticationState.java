@@ -31,7 +31,11 @@ public class AuthenticationState implements State {
             EventFactory.createAndPost(EventTypeEnum.SUCCESSFULL_AUTHENTICATION);
             logger.info("User has been successfully authenticated with the received QRCode [value="
                     + qrcode + "]");
-            Context.instance().setState(new DeliverState());
+
+            State next = new MailAuthentificationState();
+            EventBusService.instance().registerSubscriber(next);
+
+            Context.instance().setState(next);
         } else {
             logger.info("Received QRCode [value=" + qrcode + "] does not match with user's one");
             SearchingQRCodeState.instance().init();

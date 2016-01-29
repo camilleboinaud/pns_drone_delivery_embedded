@@ -22,7 +22,7 @@ public class DeliverState implements State {
         logger.info("Package is being delivered");
         EventFactory.createAndPost(EventTypeEnum.DELIVERY_SUCCESS);
 
-        State next = new MailAuthentificationState();
+        State next = new DeliveryProofState();
         EventBusService.instance().unRegisterSubscriber(this);
         EventBusService.instance().registerSubscriber(next);
         Context.instance().setState(next);
