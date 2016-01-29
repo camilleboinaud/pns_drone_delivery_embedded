@@ -13,29 +13,46 @@ public class FlightPlan {
     protected Customer customer;
     protected Order order;
     protected long timeout;
-    protected String id;
+    protected String transaction;
 
     public FlightPlan(){
         order = new Order();
         customer = new Customer();
         timeout = 30000; //20 minutes timeout
-        id = "0"; //20 minutes timeout
+        transaction = "0"; //20 minutes timeout
     }
 
-    public FlightPlan(Order order, Customer customer, String id){
+    public FlightPlan(Order order, Customer customer, String transaction){
         this.order = order;
         this.customer = customer;
         timeout = 30000;
-        this.id = id;
+        this.transaction = transaction;
     }
 
-    public FlightPlan(Order order, Customer customer, long timeout, String id) {
+    public FlightPlan(Order order, Customer customer, long timeout, String transaction) {
         this.order = order;
         this.customer = customer;
         this.timeout = timeout;
-        this.id = id;
+        this.transaction = transaction;
     }
 
+    public String getTransaction() {
+        return transaction;
+    }
+
+    public void setTransaction(String transaction) {
+        this.transaction = transaction;
+    }
+
+    @Override
+    public String toString() {
+        return "FlightPlan{" +
+                "customer=" + customer +
+                ", order=" + order +
+                ", timeout=" + timeout +
+                ", transaction='" + transaction + '\'' +
+                '}';
+    }
 
     public Customer getCustomer() {
         return customer;
@@ -61,22 +78,4 @@ public class FlightPlan {
         this.timeout = timeout;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setDroneID(String id) {
-        this.id = id;
-    }
-
-    @Override
-    public String toString() {
-        JSONObject o = new JSONObject();
-
-        o.put("customer", customer);
-        o.put("order", order);
-        o.put("timeout", timeout);
-
-        return o.toJSONString();
-    }
 }

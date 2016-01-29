@@ -51,7 +51,8 @@ public class CommunicationHub {
     public void mailAuthenticationQuery(RequestMailAuthEvent event){
         try {
             JSONObject result = HttpRequestUtils.postRequest(
-                    StaticStorageUtils.SERVER_URL + "mail/authentication?userId=" + Context.instance().getFlightPlan().getCustomer().getId(), dataRequestMapper.getMailAuthenticationRequest()
+                    StaticStorageUtils.SERVER_URL + "mail/authentication?userId=" + Context.instance().getFlightPlan().getCustomer().getId()
+                            + "&transaction=" + Context.instance().getFlightPlan().getTransaction(), dataRequestMapper.getMailAuthenticationRequest()
             );
 
         } catch (RuntimeException e){
@@ -66,7 +67,13 @@ public class CommunicationHub {
 
         //TODO check status on server
 
-        EventFactory.createAndPost(EventTypeEnum.EMAIL_CONFIMATION);
+        JSONObject result = HttpRequestUtils.getRequest(StaticStorageUtils.SERVER_URL + "flightPlan/checkAcceptation?transaction=" + Context.instance().getFlightPlan().getTransaction());
+        System.out.println(result);
+        boolean status = (Boolean) ((JSONObject) result.get("mailauth")).get("result");
+
+        if (status) {
+            EventFactory.createAndPost(EventTypeEnum.EMAIL_CONFIMATION);
+        }
     }
 
     /**

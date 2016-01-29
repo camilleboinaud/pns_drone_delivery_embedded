@@ -30,7 +30,7 @@ public class DataRequestMapper implements DataRequestMapperAPI {
     public FlightPlan saveFlightPlan(JSONObject flightPlan) {
 
         JSONObject flightPlanJSON = (JSONObject)flightPlan.get("flightPlan");
-        String droneID = (String)flightPlan.get("droneId") ;
+        String transaction = (String)flightPlan.get("transaction") ;
         JSONObject customerJSON = (JSONObject)flightPlanJSON.get("customer");
 
         JSONObject coordinateJSON = (JSONObject)customerJSON.get("coordinates");
@@ -49,7 +49,7 @@ public class DataRequestMapper implements DataRequestMapperAPI {
                 (String)orderJSON.get("qrCodeValue")
         );
 
-        return new FlightPlan(order, customer, (Long)flightPlanJSON.get("timeout"), droneID);
+        return new FlightPlan(order, customer, (Long)flightPlanJSON.get("timeout"), transaction);
     }
 
 
@@ -63,7 +63,7 @@ public class DataRequestMapper implements DataRequestMapperAPI {
     public JSONObject getMailAuthenticationRequest() {
 
         JSONObject result = new JSONObject();
-        result.put("droneID", StaticStorageUtils.FLIGHT_PLAN.getId());
+        result.put("transaction", StaticStorageUtils.FLIGHT_PLAN.getTransaction());
 
         return result;
     }
@@ -79,7 +79,7 @@ public class DataRequestMapper implements DataRequestMapperAPI {
 
         Map<String, Object> data = new HashMap<String, Object>();
         JSONObject request = new JSONObject();
-        request.put("droneID", StaticStorageUtils.FLIGHT_PLAN.getId());
+        request.put("droneID", StaticStorageUtils.FLIGHT_PLAN.getTransaction());
 
         File image = new File(imagePath);
 
