@@ -64,11 +64,7 @@ public class CommunicationHub {
 
     @Subscribe
     public void mailAuthenticationStatusQuery(MailStatusRequestEvent e) {
-
-        //TODO check status on server
-
         JSONObject result = HttpRequestUtils.getRequest(StaticStorageUtils.SERVER_URL + "flightPlan/checkAcceptation?transaction=" + Context.instance().getFlightPlan().getTransaction());
-        System.out.println(result);
         boolean status = (Boolean) ((JSONObject) result.get("mailauth")).get("result");
 
         if (status) {
@@ -86,7 +82,7 @@ public class CommunicationHub {
 
             Map<String, Object> data = dataRequestMapper.getDeliveryAcknowledgementRequest("img-gen/itheproof.png");
             JSONObject result = HttpRequestUtils.postJsonImageMultipartRequest(
-                    StaticStorageUtils.SERVER_URL + "upload/picture", (JSONObject) data.get("json"), (File) data.get("image")
+                    StaticStorageUtils.SERVER_URL + "file/upload", (JSONObject) data.get("json"), (File) data.get("image")
             );
 
             EventFactory.createAndPost(EventTypeEnum.PROOF_ACK);

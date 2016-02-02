@@ -39,7 +39,6 @@ public class Context {
     private Timer timer;
 
     public void runTimer() {
-        System.out.println("I'm in");
 
         timer = new Timer();
         timer.schedule(
@@ -51,8 +50,6 @@ public class Context {
                 },
                 flightPlan.getTimeout()
         );
-
-        System.out.println("I'm out");
 
     }
 

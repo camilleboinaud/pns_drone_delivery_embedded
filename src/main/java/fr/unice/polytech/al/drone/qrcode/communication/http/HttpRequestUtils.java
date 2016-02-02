@@ -1,5 +1,6 @@
 package fr.unice.polytech.al.drone.qrcode.communication.http;
 
+import fr.unice.polytech.al.drone.qrcode.control.Context;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -155,15 +156,13 @@ public class HttpRequestUtils {
 
             HttpEntity entity = MultipartEntityBuilder.create()
                     .addBinaryBody("file", image)
-                    .addTextBody("name", "remy")
+                    .addTextBody("userId", Context.instance().getFlightPlan().getCustomer().getId())
+                    .addTextBody("transaction", Context.instance().getFlightPlan().getTransaction())
                     .build();
 
             httppost.setEntity(entity);
-            System.out.println("executing request " + httppost.getRequestLine());
             HttpResponse response = httpclient.execute(httppost);
             HttpEntity resEntity = response.getEntity();
-
-            System.out.println(response.getStatusLine());
 
             if (resEntity != null) {
                 System.out.println(EntityUtils.toString(resEntity));

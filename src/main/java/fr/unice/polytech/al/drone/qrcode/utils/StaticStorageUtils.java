@@ -10,6 +10,6 @@ public class StaticStorageUtils {
     public static FlightPlan FLIGHT_PLAN = null;
 
     public static final String IMAGE_PATH = "img-gen/deliveryProof.png";
-    public static final String SERVER_URL = "http://localhost:4000/";
+    public static final String SERVER_URL = "http://52.49.153.103:8080/";
 
 }

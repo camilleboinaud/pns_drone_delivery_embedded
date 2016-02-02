@@ -28,27 +28,20 @@ public class ReceiveMissionState implements State {
             }
         }
 
-        System.out.println("out rcv");
-
-
         EventBusService.instance().unRegisterSubscriber(this);
 
         State next = SearchingQRCodeState.instance();
-        System.out.println("subscribe");
 
         EventBusService.instance().registerSubscriber(next);
-        System.out.println("end rcv");
         Context.instance().setState(next);
     }
 
     @Subscribe
     public void receiveAck(FlightPlanAckEvent e) {
-        System.out.println("the ack");
 
         Context.instance().reload();
         Context.instance().runTimer();
         qrun = false;
-        System.out.println("I should kill the while");
 
     }
 }

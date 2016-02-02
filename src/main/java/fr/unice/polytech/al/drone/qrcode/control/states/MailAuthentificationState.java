@@ -15,8 +15,6 @@ public class MailAuthentificationState implements State {
     private boolean qrun = true;
 
     public void action() {
-        System.out.println("Waiting for email confirmation");
-
         EventFactory.createAndPost(EventTypeEnum.REQUEST_MAIL_AUTH);
             while (qrun) {
                 try {
